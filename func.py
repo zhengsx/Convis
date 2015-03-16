@@ -12,12 +12,14 @@ def meshxy(domain, interval = 0.25):
     map = np.array([x, y, z])
     return map
 
-def fGoldsteinPrice(x, y):
+def fGoldsteinPrice(point):
+    x, y = point[0], point[1]
     z = (1 + (x + y + 1)**2 * (19 - 14*x + 3*x**2 - 14*y + 6*x*y + 3*y**2))\
                 * (30 + (2*x - 3*y)**2 * (18 - 32*x + 12*x**2 + 48*y - 36*x*y + 27*y**2))
     return z
 
-def dGoldsteinPrice(x, y):
+def dGoldsteinPrice(point):
+    x, y = point[0], point[1]
     dx = (2*(x+y+1)*(19-14*x+3*x**2-14*y+6*x*y+3*y**2)+(x+y+1)**2*(-14+6*x+6*y))*(30+(2*x-3*y)**2*(18-32*x+12*x**2+48*y-36*x*y+27*y**2))+\
         (1+(x+y+1)**2*(19-14*x+3*x**2-14*y+6*x*y+3*y**2))*(4*(2*x-3*y)*(18-32*x+12*x**2+48*y-36*x*y+27*y**2)+(2*x-3*y)**2*(-32+24*x-36*y))
     dy = (2*(x+y+1)*(19-14*x+3*x**2-14*y+6*x*y+3*y**2)+(x+y+1)**2*(-14+6*x+6*y))*(30+(2*x-3*y)**2*(18-32*x+12*x**2+48*y-36*x*y+27*y**2))+\
@@ -28,14 +30,16 @@ def dGoldsteinPrice(x, y):
 def GoldsteinPrice(interval = 0.1):
     domain = Domain(-2.0, 2.0, -2.0, 2.0)
     map = meshxy(domain, interval)
-    map[2] = fGoldsteinPrice(map[0], map[1])
+    map[2] = fGoldsteinPrice(map[0:2])
     return map
 
-def fRosenbroke(x, y):
+def fRosenbroke(point):
+    x, y = point[0], point[1]
     z = 100 * (y - x**2)**2 + (x - 1)**2
     return z
 
-def dRosenbroke(x, y):
+def dRosenbroke(point):
+    x, y = point[0], point[1]
     dx = 400 * x**3 - 400 * x * y + 2 * x - 2
     dy = 200 * (y - x**2)
     derv = np.array([dx, dy])
@@ -44,7 +48,7 @@ def dRosenbroke(x, y):
 def Rosenbroke(interval = 0.25):
     domain = Domain(-4.0, 4.0, -5.0, 10.0)
     map = meshxy(domain, interval)
-    map[2] = fRosenbroke(map[0], map[1])
+    map[2] = fRosenbroke(map[0:2])
     return map
 
 fCategory = {

@@ -1,2 +1,2 @@
 # Convis
-A convex optimization visualization toy
+A visualization toy for comparing some convex optimization algorithms on test function.
