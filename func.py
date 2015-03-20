@@ -33,27 +33,27 @@ def GoldsteinPrice(interval = 0.1):
     map[2] = fGoldsteinPrice(map[0:2])
     return map
 
-def fRosenbroke(point):
+def fRosenbrock(point):
     x, y = point[0], point[1]
     z = 100 * (y - x**2)**2 + (x - 1)**2
     return z
 
-def dRosenbroke(point):
+def dRosenbrock(point):
     x, y = point[0], point[1]
     dx = 400 * x**3 - 400 * x * y + 2 * x - 2
     dy = 200 * (y - x**2)
     derv = np.array([dx, dy])
     return derv
 
-def Rosenbroke(interval = 0.25):
+def Rosenbrock(interval = 0.25):
     domain = Domain(-4.0, 4.0, -5.0, 10.0)
     map = meshxy(domain, interval)
-    map[2] = fRosenbroke(map[0:2])
+    map[2] = fRosenbrock(map[0:2])
     return map
 
 fCategory = {
     "GoldsteinPrice": (fGoldsteinPrice, dGoldsteinPrice, GoldsteinPrice, Domain(-2.0, 2.0, -2.0, 2.0)),
-    "Rosenbroke": (fRosenbroke, dRosenbroke, Rosenbroke, Domain(-4.0, 4.0, -5.0, 10.0))
+    "Rosenbrock": (fRosenbrock, dRosenbrock, Rosenbrock, Domain(-4.0, 4.0, -5.0, 10.0))
 }
 
 class functype:

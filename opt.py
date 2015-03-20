@@ -1,7 +1,7 @@
 import numpy as np
 import func
 
-def GradientDescent(initPoint, functype, learningrate = 0.1, epoch = 100):
+def GradientDescent(initPoint, functype, learningrate = 0.01, epoch = 100):
     lineData = np.empty((3, epoch))
     lineData[0:3, 0] = [initPoint[0], initPoint[1], functype.calc(initPoint)]
     for i in range(1, epoch):
@@ -9,7 +9,7 @@ def GradientDescent(initPoint, functype, learningrate = 0.1, epoch = 100):
         lineData[2, i] = functype.calc(lineData[0:2, i])
     return lineData
 
-def GDMomentum(initPoint, functype, rho = 0.95, learningrate = 0.1, epoch = 100):
+def GDMomentum(initPoint, functype, rho = 0.95, learningrate = 0.01, epoch = 100):
     lineData = np.empty((3, epoch))
     lineData[0:3, 0] = [initPoint[0], initPoint[1], functype.calc(initPoint)]
     grad, delta = np.zeros((2, epoch)), np.zeros((2, epoch))
@@ -20,7 +20,7 @@ def GDMomentum(initPoint, functype, rho = 0.95, learningrate = 0.1, epoch = 100)
         lineData[2, i] = functype.calc(lineData[0:2, i])
     return lineData
 
-def AdaGrad(initPoint, functype, learningrate = 0.1, epoch = 100):
+def AdaGrad(initPoint, functype, learningrate = 0.01, epoch = 100):
     lineData = np.empty((3, epoch))
     lineData[0:3, 0] = [initPoint[0], initPoint[1], functype.calc(initPoint)]
     grad, sigma = np.zeros((2, epoch)), np.zeros((2, epoch))
@@ -44,3 +44,14 @@ def AdaDelta(initPoint, functype, rho = 0.95, e= 1e-6, epoch = 100):
         lineData[0:2, i] = lineData[0:2, i-1] + delta
         lineData[2, i] = functype.calc(lineData[0:2, i])
     return  lineData
+
+def NAG(initPoint, functype, rho = 0.95, learningrate = 0.01, epoch = 100):
+    lineData = np.empty((3, epoch))
+    lineData[0:3, 0] = [initPoint[0], initPoint[1], functype.calc(initPoint)]
+    grad, delta = np.zeros((2, epoch)), np.zeros((2, epoch))
+    for i in range(1, epoch):
+        grad[:, i] = functype.derv(lineData[0:2, i-1] + rho * delta[:, i-1])
+        delta[:, i] = rho * delta[:, i-1] - learningrate * grad[:, i]
+        lineData[0:2, i] = lineData[0:2, i-1] + delta[:, i]
+        lineData[2, i] = functype.calc(lineData[0:2, i])
+    return lineData
