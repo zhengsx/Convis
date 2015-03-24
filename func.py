@@ -27,6 +27,10 @@ def dGoldsteinPrice(point):
     derv = np.array([dx, dy])
     return derv
 
+def hGoldsteinPrice(point):
+    hessian = 0
+    return hessian
+
 def GoldsteinPrice(interval = 0.1):
     domain = Domain(-2.0, 2.0, -2.0, 2.0)
     map = meshxy(domain, interval)
@@ -52,16 +56,17 @@ def Rosenbrock(interval = 0.25):
     return map
 
 fCategory = {
-    "GoldsteinPrice": (fGoldsteinPrice, dGoldsteinPrice, GoldsteinPrice, Domain(-2.0, 2.0, -2.0, 2.0)),
-    "Rosenbrock": (fRosenbrock, dRosenbrock, Rosenbrock, Domain(-4.0, 4.0, -5.0, 10.0))
+    "GoldsteinPrice": (Domain(-2.0, 2.0, -2.0, 2.0), GoldsteinPrice, fGoldsteinPrice, dGoldsteinPrice),
+    "Rosenbrock": (Domain(-4.0, 4.0, -5.0, 10.0), Rosenbrock, fRosenbrock, dRosenbrock)
 }
 
 class functype:
     def __init__(self, f):
-        self.calc = fCategory.get(f, "no this function type.")[0]
-        self.derv = fCategory.get(f, "no this function type.")[1]
-        self.func = fCategory.get(f, "no this function type.")[2]
-        self.domain = fCategory.get(f, "no this function type.")[3]
+        self.domain = fCategory.get(f, "no this function type.")[0]
+        self.func = fCategory.get(f, "no this function type.")[1]
+        self.calc = fCategory.get(f, "no this function type.")[2]
+        self.derv = fCategory.get(f, "no this function type.")[3]
+        #self.hess = fCategory.get(f, "no this function type.")[4]
 
 if __name__ == "__main__":
     print(0)
